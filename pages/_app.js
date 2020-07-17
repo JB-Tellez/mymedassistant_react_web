@@ -119,6 +119,25 @@ export default class MyApp extends App {
 
     }
 
+    updateSchedule = async (schedule) => {
+
+        const accessToken = this.state.access;
+
+        let url = API_URL + 'scheduler/' + schedule.id;
+
+        let config = {
+            headers: { 'Authorization': "Bearer " + accessToken }
+        };
+
+        const response = await axios.put(url, schedule, config);
+
+        console.log(response.data);
+
+        this.setState({
+            schedules: this.state.schedules.map(item => item.id == schedule.id ? response.data : item)
+        })
+    }
+
     createSchedule = async (schedule) => {
 
         const accessToken = this.state.access;
@@ -192,6 +211,7 @@ export default class MyApp extends App {
                 schedules: this.state.schedules,
                 deleteSchedule: this.deleteSchedule,
                 createSchedule: this.createSchedule,
+                updateSchedule: this.updateSchedule,
             }}>
                 <Component {...pageProps} />
             </AppContext.Provider>
